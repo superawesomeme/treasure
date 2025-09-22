@@ -24,9 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---- Config ----
   const totalTiles = 36; // 6x6
   // Assets (your latest versions)
-  const trapImg  = 'https://raw.githubusercontent.com/superawesomeme/treasure/88de61ae9b38ecc787e7f220adc50db72a00b6da/skull-25.png';
-  const chestImg = 'https://raw.githubusercontent.com/superawesomeme/treasure/b303ac7dd9137d7e99d244d9c90bfba6069430e8/treasure-25.png';
-  const logoSrc  = 'https://raw.githubusercontent.com/superawesomeme/treasure/ee3d8fd52bc26c8441efa86cb5648111a1483b98/logo.png';
+  const trapImg  = 'images/skull-25.png';
+  const chestImg = 'images/treasure-25.png';
+  const logoSrc  = 'images/logo.png';
 
   // ---- Game state ----
   let trapCount = 0;
@@ -394,3 +394,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
