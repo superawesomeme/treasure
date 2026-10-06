@@ -18,15 +18,109 @@ document.addEventListener('DOMContentLoaded', () => {
   const restartBtnOverlay = document.getElementById('restart-btn-overlay');
   const confettiCanvas = document.getElementById('confetti-canvas');
 
-  // Ensure scoreboard has logo + players container (defensive)
-  ensureScoreboardShell();
+  // Language / setup refs
+  const languageToggle = document.getElementById('language-toggle');
+  const setupLogo = document.getElementById('setup-logo');
+  const difficultyLabel = document.getElementById('difficulty-label');
+  const difficultyEasy = document.getElementById('difficulty-easy');
+  const difficultyNormal = document.getElementById('difficulty-normal');
+  const playersLabel = document.getElementById('players-label');
+  const startBtn = document.getElementById('start-btn');
+  const languageEs = document.getElementById('language-es');
+  const languageEn = document.getElementById('language-en');
 
   // ---- Config ----
   const totalTiles = 36; // 6x6
-  // Assets (your latest versions)
   const trapImg  = '/treasure/images/skull-25.png';
   const chestImg = '/treasure/images/treasure-25.png';
-  const logoSrc  = '/treasure/images/logo.png';
+  const logos = {
+    es: '/treasure/images/logo-es.png',
+    en: '/treasure/images/logo-en.png'
+  };
+
+  const translations = {
+    es: {
+      title: 'Isla del Tesoro',
+      difficulty: 'Nivel:',
+      easy: 'Fácil (1-99)',
+      normal: 'Normal (100-999)',
+      players: 'Número de jugadores:',
+      player: 'Jugador',
+      start: 'Inicio',
+      restart: 'Jugar de nuevo',
+      fullscreen: 'Pantalla completa',
+      treasure: 'Tesoro',
+      trap: 'Trampa',
+      currency: '€',
+      singleTrapLoss: name => `¡Juego terminado! ${name} encontró una trampa y perdió.`,
+      winner: (name, score) => `¡Victoria! ${name} gana con €${score}`
+    },
+    en: {
+      title: 'Treasure Island',
+      difficulty: 'Difficulty:',
+      easy: 'Easy (1-99)',
+      normal: 'Normal (100-999)',
+      players: 'Number of players:',
+      player: 'Player',
+      start: 'Start',
+      restart: 'Play again',
+      fullscreen: 'Full screen',
+      treasure: 'Treasure',
+      trap: 'Trap',
+      currency: '£',
+      singleTrapLoss: name => `Game over! ${name} found a trap and lost.`,
+      winner: (name, score) => `Victory! ${name} wins with £${score}`
+    }
+  };
+
+  let currentLanguage = sessionStorage.getItem('treasureLanguage') === 'en' ? 'en' : 'es';
+
+  function t(key) {
+    return translations[currentLanguage][key];
+  }
+
+  function applyLanguage() {
+    const isEnglish = currentLanguage === 'en';
+    document.documentElement.lang = currentLanguage;
+    document.title = t('title');
+
+    if (languageToggle) {
+      languageToggle.checked = isEnglish;
+      languageToggle.setAttribute('aria-label', isEnglish ? 'Switch language to Spanish' : 'Switch language to English');
+    }
+    languageEs?.classList.toggle('active', !isEnglish);
+    languageEn?.classList.toggle('active', isEnglish);
+
+    if (difficultyLabel) difficultyLabel.textContent = t('difficulty');
+    if (difficultyEasy) difficultyEasy.textContent = t('easy');
+    if (difficultyNormal) difficultyNormal.textContent = t('normal');
+    if (playersLabel) playersLabel.textContent = t('players');
+    if (startBtn) startBtn.textContent = t('start');
+    if (restartBtnOverlay) restartBtnOverlay.textContent = t('restart');
+    if (fsBtn) fsBtn.title = t('fullscreen');
+
+    if (setupLogo) {
+      setupLogo.src = logos[currentLanguage];
+      setupLogo.alt = t('title');
+    }
+    const scoreLogo = scoreboard?.querySelector('.scoreboard-logo');
+    if (scoreLogo) {
+      scoreLogo.src = logos[currentLanguage];
+      scoreLogo.alt = t('title');
+    }
+
+    document.querySelectorAll('.player-name').forEach((input, i) => {
+      input.placeholder = `${t('player')} ${i + 1}`;
+    });
+
+    if (players.length) renderScoreboard();
+  }
+
+  languageToggle?.addEventListener('change', () => {
+    currentLanguage = languageToggle.checked ? 'en' : 'es';
+    sessionStorage.setItem('treasureLanguage', currentLanguage);
+    applyLanguage();
+  });
 
   // ---- Game state ----
   let trapCount = 0;
@@ -36,6 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPlayerIndex = 0;
   let turns = 0;
   let gameEnded = false;
+
+  // Ensure scoreboard has logo + players container (defensive)
+  ensureScoreboardShell();
+  applyLanguage();
 
   // ---- Setup inputs ----
   generatePlayerNameFields(parseInt(playerCountDropdown.value, 10));
@@ -63,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const input = document.createElement('input');
       input.type = 'text';
       input.classList.add('player-name');
-      input.placeholder = `Jugador ${i + 1}`;
+      input.placeholder = `${t('player')} ${i + 1}`;
       playerNamesContainer.appendChild(input);
     }
   }
@@ -97,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const numPlayers = parseInt(playerCountDropdown.value, 10);
 
     players = Array.from(document.querySelectorAll('.player-name'), (input, i) => ({
-      name: input.value || `Jugador ${i + 1}`,
+      name: input.value || `${t('player')} ${i + 1}`,
       score: 0,
       skipTurn: false
     }));
@@ -141,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const list = players.map((p, i) =>
       `<div class="player ${i === currentPlayerIndex ? 'current-player' : ''} ${p.skipTurn ? 'skipping' : ''}">
-         ${p.name}: €${p.score}
+         ${p.name}: ${t('currency')}${p.score}
        </div>`
     ).join('');
 
@@ -151,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       // Fallback: ensure shell exists if missing
       scoreboard.innerHTML = `
-        <img src="${logoSrc}" alt="Isla del Tesoro" class="scoreboard-logo" />
+        <img src="${logos[currentLanguage]}" alt="${t('title')}" class="scoreboard-logo" />
         <div class="players">${list}</div>
       `;
     }
@@ -191,10 +289,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const val = treasures[treasureIndices.indexOf(index)];
       players[currentPlayerIndex].score += val;
       tileBack.classList.add('treasure');
-      tileBack.innerHTML = `<img src="${chestImg}" alt="Tesoro" /><div class="value">€${val}</div>`;
+      tileBack.innerHTML = `<img src="${chestImg}" alt="${t('treasure')}" /><div class="value">${t('currency')}${val}</div>`;
     } else if (trapIndices.includes(index)) {
       tileBack.classList.add('trap');
-      tileBack.innerHTML = `<img src="${trapImg}" alt="Trampa" />`;
+      tileBack.innerHTML = `<img src="${trapImg}" alt="${t('trap')}" />`;
 
       if (players.length === 1) {
         tileElement.classList.add('flipped');
@@ -249,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isTrapLoss) {
       // Single player lost to trap
       if (resultTitle) resultTitle.textContent =
-        `¡Juego terminado! ${players[0].name} encontró una trampa y perdió.`;
+        t('singleTrapLoss')(players[0].name);
       showResultOverlay(false);
       return;
     }
@@ -257,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Multi-player winner
     const winner = players.reduce((max, p) => (p.score > max.score ? p : max));
     if (resultTitle) resultTitle.textContent =
-      `¡Victoria! ${winner.name} gana con €${winner.score}`;
+      t('winner')(winner.name, winner.score);
     showResultOverlay(true);
   }
 
@@ -382,8 +480,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!scoreboard.querySelector('.scoreboard-logo')) {
       const img = document.createElement('img');
       img.className = 'scoreboard-logo';
-      img.alt = 'Isla del Tesoro';
-      img.src = logoSrc;
+      img.alt = t('title');
+      img.src = logos[currentLanguage];
       scoreboard.prepend(img);
     }
     // Ensure players container
