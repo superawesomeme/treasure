@@ -104,29 +104,20 @@ body {
 .tile-back.treasure{ background: transparent; position: relative; }
 .tile-back.treasure img{ width: 90%; height: 90%; display: block; margin: 0 auto; object-fit: contain; filter: none; }
 
-.tile-back.treasure .value{
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: "Skranji", cursive;
-  font-weight: 800;
-  font-size: clamp(32px, 6.5vmin, 72px);
-  color: #eedba6;
-  text-shadow:
-     0 1px 0 hsl(30, 20%, 40%),
-     0 2px 0 hsl(30, 20%, 35%),
-     0 3px 0 hsl(30, 20%, 30%),
-     0 4px 0 hsl(30, 20%, 25%),
-     0 5px 0 rgba(0,0,0,.05),
-     0 1px 3px rgba(0,0,0,.2),
-     0 3px 5px rgba(0,0,0,.2),
-     0 5px 10px rgba(0,0,0,.25),
-     0 10px 10px rgba(0,0,0,.25),
-     0 20px 20px rgba(0,0,0,.3);
-  letter-spacing: -.02em;
-  pointer-events: none;
-  -webkit-text-stroke: 1px #4b3733;
-  text-stroke: 1px #4b3733;
+.tile-back.treasure .value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Skranji", cursive;
+    font-weight: 800;
+    font-size: clamp(32px, 6.5vmin, 72px);
+    color: #ffe49a;
+    text-shadow: 0 1px 0 hsl(21deg 32.26% 12.16%), 0 2px 0 hsl(21deg 32.26% 12.16%), 0 3px 0 hsl(20deg 33.33% 12.35%), 0 4px 0 hsl(30, 20%, 25%), 0 5px 0 rgba(0, 0, 0, .05), 0 1px 3px rgba(0, 0, 0, .2), 0 3px 5px rgba(0, 0, 0, .2), 0 5px 10px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .25), 0 20px 20px rgba(0, 0, 0, .3);
+    letter-spacing: -.02em;
+    pointer-events: none;
+    -webkit-text-stroke: 2px hsl(21deg 32.26% 12.16%);
+    text-stroke: 1px #4b3733;
 }
 
 /* Scoreboard */
@@ -151,20 +142,13 @@ body {
   font-size: clamp(36px, 5.6vmin, 56px);
   height: 1em;
 }
-.scoreboard .current-player{
-  font-weight: 400;
-  color: #eedba6;
-  text-shadow:
-     0 1px 0 hsl(30, 20%, 40%),
-     0 2px 0 hsl(30, 20%, 35%),
-     0 3px 0 hsl(30, 20%, 30%),
-     0 4px 0 hsl(30, 20%, 25%),
-     0 0 5px rgba(0,0,0,.05),
-     0 1px 3px rgba(0,0,0,.2),
-     0 3px 5px rgba(0,0,0,.2),
-     0 5px 10px rgba(0,0,0,.25);
-  letter-spacing: -.01em;
+.scoreboard .current-player {
+    font-weight: 400;
+    color: #ffe49a;
+    text-shadow: 0 1px 0 hsl(21deg 32.26% 12.16%), 0 2px 0 hsl(21deg 32.26% 12.16%), 0 3px 0 hsl(20deg 33.33% 12.35%), 0 4px 0 hsl(30, 20%, 25%), 0 5px 0 rgba(0, 0, 0, .05), 0 1px 3px rgba(0, 0, 0, .2), 0 3px 5px rgba(0, 0, 0, .2), 0 5px 10px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .25), 0 20px 20px rgba(0, 0, 0, .3);
+    letter-spacing: -.01em;
 }
+
 .scoreboard .player.skipping{ color: var(--brand) !important; text-shadow: none !important; }
 
 /* Setup (overlay vibe) */
