@@ -82,17 +82,14 @@ body {
   font-weight: 400;
   font-size: clamp(54px, 8.4vmin, 84px);
 }
-.tile-front{
-  color: #2a1c14;
-  background: linear-gradient(180deg, #f9e7b0 0%, #eedba6 40%, #d1b48b 100%);
-  border: 1px solid #bfa26f;
-  border-radius: 12px;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
-  box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.4),
-    inset 0 -2px 4px rgba(0,0,0,0.15),
-    0 4px 8px rgba(0,0,0,.35);
-  transition: transform .08s ease, box-shadow .2s ease, filter .2s ease;
+.tile-front {
+    color: #2a1c14;
+    background: linear-gradient(180deg, #f9e7b0 0%, #f9dc98 40%, #f8b760 100%);
+    /* border: 1px solid #dbc6ad; */
+    border-radius: 12px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4), inset 0 -2px 4px rgb(218 88 27), 0 4px 8px rgb(102 39 9);
+    transition: transform .08s ease, box-shadow .2s ease, filter .2s ease;
 }
 .tile-back{ transform: rotateY(180deg); }
 .tile-back.safe{ background: transparent; color: #000; }
